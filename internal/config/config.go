@@ -18,6 +18,7 @@ func (c *Config) SetUser(name string) error {
 	return write(*c)
 }
 
+// functionalities
 func Read() (Config, error) {
 	filePath, err := getConfigFilePath()
 	if err != nil {
