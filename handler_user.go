@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -66,6 +67,21 @@ func handlerReset(s *state, cmd command) error {
 	if err != nil {
 		fmt.Println("Something went wrong with the call to s.db.DeleteUsers")
 		return err
+	}
+	return nil
+}
+
+func handlerGetUsers(s *state, cmd command) error {
+	users, err := s.db.GetUsers(context.Background())
+	if err != nil {
+		return errors.New("Error: Couldn't call s.db.GetUsers")
+	}
+	for i := 0; i < len(users); i++ {
+		if users[i].Name == s.cfg.CurrentUserName {
+			fmt.Printf("* %s (current)\n", users[i].Name)
+			continue
+		}
+		fmt.Printf("* %s\n", users[i].Name)
 	}
 	return nil
 }
